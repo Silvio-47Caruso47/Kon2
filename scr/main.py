@@ -1,15 +1,47 @@
 import argparse
 import sys
+import os
+
+
+def get_direct_dependencies(filepath):
+    dependencies = []
+    if not os.path.exists(filepath):
+        print(f"Ошибка: Файл '{filepath}' не найден!")
+        sys.exit(1)
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            for line in file:
+                line = line.strip()
+                if line.startswith("Requires-Dist:"):
+                    dep_info = line.replace(
+                        "Requires-Dist:", ""
+                    ).strip()
+                    dep_name = dep_info.split()[0]
+                    dependencies.append(dep_name)
+    except Exception as e:
+        print(f"Ошибка при чтении файла: {e}")
+        sys.exit(1)
+    return dependencies
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Инструмент визуализации зависимостей (Вариант 25)")
-    parser.add_argument("--package", required=True, help="Имя анализируемого пакета")
-    parser.add_argument("--repo", required=True, help="URL-адрес репозитория или путь к файлу")
-    parser.add_argument("--test-mode", action="store_true", help="Режим работы с тестовым репозиторием")
-    parser.add_argument("--version", required=True, help="Версия пакета")
-    parser.add_argument("--ascii-tree", action="store_true", help="Режим вывода в виде ASCII-дерева")
-    parser.add_argument("--depth", type=int, required=True, help="Максимальная глубина анализа")
+    parser = argparse.ArgumentParser(
+        description="Инструмент визуализации зависимостей")
+    parser.add_argument(
+        "--package", required=True, help="Имя анализируемого пакета")
+    parser.add_argument(
+        "--repo", required=True, help="URL-адрес или путь к файлу")
+    parser.add_argument(
+        "--test-mode", action="store_true", help="Режим тестирования")
+    parser.add_argument(
+        "--version", required=True, help="Версия пакета")
+    parser.add_argument(
+        "--ascii-tree", action="store_true", help="Режим ASCII-дерева")
+    parser.add_argument(
+        "--depth", type=int, required=True, help="Максимальная глубина")
+    
     args = parser.parse_args()
+
     if not args.package.strip():
         print("Ошибка: Имя пакета не может быть пустым.")
         sys.exit(1)
@@ -19,6 +51,7 @@ def main():
     if not args.version.strip():
         print("Ошибка: Версия пакета не может быть пустой.")
         sys.exit(1)
+
     print("--- Настройки приложения ---")
     print(f"package: {args.package}")
     print(f"repo: {args.repo}")
@@ -27,5 +60,16 @@ def main():
     print(f"ascii-tree: {args.ascii_tree}")
     print(f"depth: {args.depth}")
     print("----------------------------")
+
+    print("\n--- Прямые зависимости ---")
+    deps = get_direct_dependencies(args.repo)
+    if not deps:
+        print("Прямых зависимостей не найдено.")
+    else:
+        for dep in deps:
+            print(f"- {dep}")
+    print("---------------------------")
+
+
 if __name__ == "__main__":
     main()
