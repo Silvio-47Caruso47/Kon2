@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: my-awesome-package
+Version: 1.0.0
+Requires-Dist: requests
+Requires-Dist: urllib3 (>=1.26)
+Requires-Dist: chardet
