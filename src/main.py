@@ -2,13 +2,20 @@ import argparse
 import sys
 
 def main():
-    parser = argparse.ArgumentParser(description="Инструмент визуализации зависимостей (Вариант 25)")
-    parser.add_argument("--package", required=True, help="Имя анализируемого пакета")
-    parser.add_argument("--repo", required=True, help="URL-адрес репозитория или путь к файлу")
-    parser.add_argument("--test-mode", action="store_true", help="Режим работы с тестовым репозиторием")
-    parser.add_argument("--version", required=True, help="Версия пакета")
-    parser.add_argument("--ascii-tree", action="store_true", help="Режим вывода в виде ASCII-дерева")
-    parser.add_argument("--depth", type=int, required=True, help="Максимальная глубина анализа")
+    parser = argparse.ArgumentParser(
+        description="Инструмент визуализации зависимостей")
+    parser.add_argument(
+        "--package", required=True, help="Имя пакета")
+    parser.add_argument(
+        "--repo", required=True, help="Путь к файлу")
+    parser.add_argument(
+        "--test-mode", action="store_true", help="Режим тестов")
+    parser.add_argument(
+        "--version", required=True, help="Версия пакета")
+    parser.add_argument(
+        "--ascii-tree", action="store_true", help="Вывод деревов")
+    parser.add_argument(
+        "--depth", type=int, required=True, help="Глубина")
     args = parser.parse_args()
     if not args.package.strip():
         print("Ошибка: Имя пакета не может быть пустым.")
