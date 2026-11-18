@@ -100,9 +100,7 @@ def create_parser():
     return parser
 
 
-def main():
-    parser = create_parser()
-    args = parser.parse_args()
+def a(args):
     if not args.package.strip():
         print("Ошибка: Имя пакета не может быть пустым.")
         sys.exit(1)
@@ -112,6 +110,11 @@ def main():
     if not args.version.strip():
         print("Ошибка: Версия пакета не может быть пустой.")
         sys.exit(1)
+
+def main():
+    parser = create_parser()
+    args = parser.parse_args()
+    a(args)
     print("--- Настройки приложения ---")
     print(f"package: {args.package}")
     print(f"repo: {args.repo}")
